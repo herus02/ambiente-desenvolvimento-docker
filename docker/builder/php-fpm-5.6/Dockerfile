@@ -1,5 +1,5 @@
 FROM php:5.6-fpm
-
+MAINTAINER danilosilva87
 ENV http_proxy 'http://192.168.10.1:3128'
 ENV https_proxy 'http://192.168.10.1:3128'
 
