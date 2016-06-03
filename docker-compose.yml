@@ -1,46 +1,91 @@
-nginx:
-    image: nginx:latest
-    command: "nginx -g 'daemon off;'"
-    container_name: nginx
-    links:
-        - php-fpm-5.6
-    ports:
-        - "8080:80"
-    volumes:
-        - ./www/:/var/www
-        - ./docker/builder/nginx/conf.d:/etc/nginx/conf.d
-        - ./docker/builder/nginx/nginx.conf:/etc/nginx/nginx.conf
-    working_dir: /var/www
-php-apache-5.6:
-    image: php:5.6-apache
-    container_name: php-apache-5.6
-    ports:
-        - "8081:80"
-        - "9001:9000"
-    volumes:
-        - ./www/:/var/www/html
-        - ./docker/builder/php-apache-5.6/apache2/apache2.conf:/etc/apache2/apache2.conf
-        - ./docker/builder/php-apache-5.6/apache2/sites-enabled:/etc/apache2/sites-enabled
-    working_dir: /var/www
-php-fpm-5.6:
-    build: ./docker/builder/php-fpm-5.6/
-    command: "/data/php-fpm.sh"
-    container_name: php-fpm-5.6
-    links:
-        - db  
-    ports:
-        - "9000:9000"
-    volumes:
-        - ./www:/var/www
-        - ./docker/builder/php-fpm-5.6:/data
-    working_dir: /var/www
-db:
-    image: mysql:latest
-    container_name: mysql-5.7
-    ports:
-        - "3307:3306"
-    environment:
-        MYSQL_ROOT_PASSWORD: 123456
-        MYSQL_USER: dev
-        MYSQL_PASSWORD: 123456
-        MYSQL_DATABASE: myapp
+version: '2'
+services:
+    php-5.4-apache:
+        build: ./docker/builder/php54apache
+        container_name: php-5.4-apache
+        ports:
+            - "9001:9000"
+            - "8081:80"
+        working_dir: /var/www
+    php-5.4-fpm:
+        build: ./docker/builder/php54fpm
+        container_name: php-5.4-fpm
+        command: "/data/php-fpm.sh"
+        ports:
+            - "9002:9000"
+        volumes:
+            - ./www:/var/www
+            - ./docker/builder/script:/data
+        working_dir: /var/www
+    php-5.5-apache:
+        build: ./docker/builder/php55apache
+        container_name: php-5.5-apache
+        ports:
+            - "9003:9000"
+            - "8083:80"
+        working_dir: /var/www    
+    php-5.5-fpm:
+        build: ./docker/builder/php55fpm
+        container_name: php-5.5-fpm
+        command: "/data/php-fpm.sh"
+        ports:
+            - "9004:9000"
+        volumes:
+            - ./www:/var/www
+            - ./docker/builder/script:/data
+        working_dir: /var/www               
+    php-5.6-apache:
+        build: ./docker/builder/php56apache
+        container_name: php-5.6-apache
+        ports:
+            - "9005:9000"
+            - "8085:80"
+        working_dir: /var/www    
+    php-5.6-fpm:
+        build: ./docker/builder/php56fpm
+        container_name: php-5.6-fpm
+        command: "/data/php-fpm.sh"
+        ports:
+            - "9006:9000"
+        volumes:
+            - ./www:/var/www
+            - ./docker/builder/script:/data
+        working_dir: /var/www                  
+    php-7.0-apache:
+        build: ./docker/builder/php70apache
+        container_name: php-7.0-apache
+        ports:
+            - "9017:9000"
+            - "8017:80"
+        working_dir: /var/www    
+    php-7.0-fpm:
+        build: ./docker/builder/php70fpm
+        container_name: php-7.0-fpm
+        command: "/data/php-fpm.sh"
+        ports:
+            - "9008:9000"
+        volumes:
+            - ./www:/var/www
+            - ./docker/builder/script:/data
+        working_dir: /var/www    
+    db:
+        image: mysql:latest
+        container_name: mysql-5.7
+        ports:
+            - "3307:3306"
+        environment:
+            MYSQL_ROOT_PASSWORD: 123456
+            MYSQL_USER: dev
+            MYSQL_PASSWORD: 123456
+            MYSQL_DATABASE: myapp
+    nginx:
+        image: nginx:latest
+        command: "nginx -g 'daemon off;'"
+        container_name: nginx
+        ports:
+            - "8080:80"
+        volumes:
+            - ./www/:/var/www
+            - ./docker/builder/nginx/conf.d:/etc/nginx/conf.d
+            - ./docker/builder/nginx/nginx.conf:/etc/nginx/nginx.conf
+        working_dir: /var/www
