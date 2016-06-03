@@ -2,7 +2,7 @@ Ambiente-desenvolvimento-docker
 ===================
 Ambiente de desenvolvimento utilizando docker (PHP+Apache) + MySQL + Nginx + PHP-Fpmç
 
-Imagens que estão sendo utilizada na construção do ambiente
+Imagens
 -------
 
 [PHP 5.6.22-apache](https://github.com/docker-library/php/blob/81ceba13187f9488f1ab25683575ac1b62fea772/5.6/apache/Dockerfile)
