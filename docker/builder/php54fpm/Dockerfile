@@ -1,6 +1,4 @@
 FROM php:5.4-fpm
-MAINTAINER dev@chialab.it
-
 # Install PHP extensions and PECL modules.
 RUN buildDeps=" \
         libbz2-dev \

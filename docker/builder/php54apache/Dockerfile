@@ -1,5 +1,5 @@
 FROM php:5.4-apache
-MAINTAINER dev@chialab.it
+MAINTAINER danilosilva87
 
 # Install PHP extensions and PECL modules.
 RUN buildDeps=" \
