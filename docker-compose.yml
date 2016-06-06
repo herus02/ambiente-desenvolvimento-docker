@@ -19,6 +19,8 @@ services:
             - ./www:/var/www
             - ./docker/builder/script:/data
         working_dir: /var/www
+        depends_on:
+          - nginx
     php-5.5-apache:
         build: ./docker/builder/php55apache
         container_name: php-5.5-apache
@@ -86,14 +88,16 @@ services:
             MYSQL_USER: dev
             MYSQL_PASSWORD: 123456
             MYSQL_DATABASE: myapp
-    # nginx:
-    #     image: nginx:latest
-    #     command: "nginx -g 'daemon off;'"
-    #     container_name: nginx
-    #     ports:
-    #         - "8080:80"
-    #     volumes:
-    #         - ./www/:/var/www
-    #         - ./docker/builder/nginx/conf.d:/etc/nginx/conf.d
-    #         - ./docker/builder/nginx/nginx.conf:/etc/nginx/nginx.conf
-    #     working_dir: /var/www
+    nginx:
+        image: nginx
+        command: "nginx -g 'daemon off;'"
+        container_name: nginx
+        ports:
+            - "8080:80"
+        volumes:
+            - ./www/:/var/www
+            - ./docker/builder/nginx/conf.d:/etc/nginx/conf.d
+            - ./docker/builder/nginx/nginx.conf:/etc/nginx/nginx.conf
+        working_dir: /var/www
+        environment:
+          PHP: 'php-5.4-fpm'        
